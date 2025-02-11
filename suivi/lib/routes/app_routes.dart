@@ -3,6 +3,7 @@
 import 'package:get/get.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:suivi/views/admin_home.dart';
+import 'package:suivi/views/forgot_password.dart';
 import 'package:suivi/views/home.dart';
 import 'package:suivi/views/login.dart';
 import 'package:suivi/views/profile.dart';
@@ -23,7 +24,7 @@ class AppPages {
     GetPage(name: Routes.profile, page: () => Profile()),
     GetPage(name: Routes.admin, page: () => AdminPage()),
     GetPage(name: Routes.userAttendance, page: () => UserAttendancePage(userId: Get.arguments)),
-
+    GetPage(name: Routes.forgotPassword, page: () => ForgotPasswordPage()),
   ];
 }
 
@@ -36,5 +37,5 @@ class Routes {
   static const admin = '/adminHome';
   static const userAttendance = '/userAttendance';
   static const profile = '/profile';
-
+  static const forgotPassword = '/forgotPassword';
 }

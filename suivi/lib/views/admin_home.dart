@@ -32,20 +32,45 @@ class AdminPage extends StatelessWidget {
               User user = controller.users[index];
               return Container(
                 margin: EdgeInsets.symmetric(vertical: 5),
-                decoration: BoxDecoration(
-                  color: index.isEven ? Colors.white : Colors.grey[100],
-                  border: Border(
-                      bottom: BorderSide(color: Colors.deepPurple.shade100)
+                child: Card(
+                  elevation: 2, // Ajoute une ombre légère : Shadow sur le card
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(color: Colors.deepPurple.shade100, width: 1),
                   ),
-                  borderRadius: BorderRadius.circular(10),
-                  
-                ),
-                child: ListTile(
-                  title: Text('${user.username} -- ${user.phoneNumber}'),
-                  subtitle: Text(user.email),
-                  onTap: () {
-                    Get.to(() => UserAttendancePage(userId: user.id));
-                  },
+                  color: index.isEven ? Colors.white : Colors.grey[100],
+                  child: InkWell(
+                    onTap: () {
+                      Get.to(() => UserAttendancePage(userId: user.id));
+                    },
+                    borderRadius: BorderRadius.circular(10),
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Row(
+                        children: [
+                          Icon(Icons.person, color: Colors.deepPurple),
+                          SizedBox(width: 16), 
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${user.username} -- ${user.phoneNumber}',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 4), 
+                                Text(
+                                  user.email,
+                                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Icon(Icons.arrow_forward_ios, color: Colors.deepPurple), 
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               );
             },

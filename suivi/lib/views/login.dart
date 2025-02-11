@@ -155,8 +155,20 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
+                
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end, 
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Get.toNamed('forgotPassword');
+                      },
+                      child: Text('Mot de Passe Oublié'),
+                    ),
+                  ],
+                ),
                 SizedBox(
-                  height: screenHeight / 20,
+                  height: screenHeight / 60,
                 ),
                 TextButton(
                   onPressed: () {

@@ -237,3 +237,38 @@ def get_user_attendance(request, user_id):
         return Response(serializer.data)
     except CustomUser.DoesNotExist:
         return Response({'error': 'User not found'}, status=404)
+
+
+class ForgotPasswordView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        phone_number = request.data.get('phone_number')
+        user = CustomUser.objects.filter(phone_number=phone_number).first()
+
+        if not user:
+            return Response({"error": "Phone number not registered"}, status=status.HTTP_400_BAD_REQUEST)
+
+        success, otp = send_sms(phone_number)
+        if not success:
+            return Response({"error": "Failed to send OTP"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        cache.set(phone_number, otp, timeout=300)  # Store OTP for 5 minutes
+        return Response({"message": "OTP sent"}, status=status.HTTP_200_OK)
+    
+class ResetPasswordView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        phone_number = request.data.get('phone_number')
+        otp = request.data.get('otp')
+        new_password = request.data.get('new_password')
+
+        user = CustomUser.objects.filter(phone_number=phone_number).first()
+        cached_otp = cache.get(phone_number)
+
+        if not user or not cached_otp or str(cached_otp) != str(otp):
+            return Response({"error": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(new_password)
+        user.save()
+
+        return Response({"message": "Password reset successful"}, status=status.HTTP_200_OK)
